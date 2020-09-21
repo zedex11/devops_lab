@@ -16,7 +16,6 @@ def create_diction():
                 for i in range((len(keys) - len(values))):
                     values.append('None')
             # fill the dictionary
-            n = 0
             for n in range(len(keys)):
                 diction[keys[n]] = values[n]
             print(diction)
