@@ -4,7 +4,7 @@ setup(
     name="snapshot",
     packages=find_packages(),
     entry_points={
-        "console_scripts": 
+        "console_scripts":
             ["snapshot = monitor.snapshot:main"]
     },
     install_requires=[
