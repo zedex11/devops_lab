@@ -9,3 +9,4 @@ apache_vhosts:
   documentroot: /www/zedex
   serveradmin: www.zedex@tut.by
   directorypath: "/usr/local/httpd/htdocs"
+  
