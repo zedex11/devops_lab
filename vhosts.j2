@@ -1,0 +1,13 @@
+{% for vhost in apache_vhosts %}
+{% if vhost.lisen_adress_and_port %} <VirtualHost {{ vhost.lisen_adress_and_port }}> {% endif %}
+{% if vhost.servername %}  ServerName {{ vhost.servername }} {% endif %}
+{% if vhost.documentroot %}  DocumentRoot {{ vhost.documentroot }} {% endif %}
+{% if vhost.serveradmin %}  ServerAdmin {{ vhost.serveradmin }} {% endif %}
+{% if vhost.directorypath %}  <Directory {{ vhost.directorypath }}> {% endif %}
+     AllowOverride All
+     Options Indexes FollowSymLinks
+     Order allow,deny
+     Allow from all
+  </Directory>
+</VirtualHost>
+{% endfor %}

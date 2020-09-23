@@ -1,0 +1,11 @@
+apache_vhosts:
+- servername: www.domain.tld
+  lisen_adress_and_port: '*:80'
+  documentroot: /www/domain
+  serveradmin: www-admin@foo.example.com
+  directorypath: "/usr/local/httpd/htdocs"
+- servername: www.zedex.by
+  lisen_adress_and_port: '*:443'
+  documentroot: /www/zedex
+  serveradmin: www.zedex@tut.by
+  directorypath: "/usr/local/httpd/htdocs"
