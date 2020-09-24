@@ -3,23 +3,27 @@ import requests
 
 
 def get_pulls(state):
-    if state == "open":
-        return get_pulls_open()
-    elif state == "closed":
-        return get_pulls_closed()
-    elif state == "accepted":
-        return get_pulls_accepted()
-    elif state == "needs work":
-        return get_pulls_needs_work()
+    data = get_content()
+    if state == "open" or state == "closed":
+        return get_pulls_state(data, state)
+    elif state == "accepted" or state == "needs work":
+        return get_pulls_label(data, state)
 
 
-def get_pulls_open():
+def get_content():
+    user = 'user_name'  # enter your git-hub username
+    passwd = 'password'  # enter your git-hub password
+    params = {'per_page': '100', 'state': 'all'}
     response = requests.get('https://api.github.com/repos/alenaPy/devops_lab/pulls',
-                            params={'per_page': '100'})
+                            auth=(user, passwd), params=params)
     data = response.json()
-    open_list = []
+    return data
+
+
+def get_pulls_state(data, state):
+    state_list = []
     for element in data:
-        if element["state"] == "open":
+        if element["state"] == state:
             diction = {
                 "num": "x",
                 "title": "x",
@@ -28,41 +32,16 @@ def get_pulls_open():
             diction["num"] = element["number"]
             diction["title"] = element["title"]
             diction["link"] = element["html_url"]
-            open_list.append(diction)
-    open_list = sorted(open_list, key=lambda x: x['num'])
-    return open_list
+            state_list.append(diction)
+    state_list = sorted(state_list, key=lambda x: x['num'])
+    return state_list
 
 
-def get_pulls_closed():
-    response = requests.get('https://api.github.com/repos/alenaPy/devops_lab/pulls?state=closed',
-                            params={'per_page': '100'})
-    data = response.json()
-    closed_list = []
-
-    for element in data:
-        if element["state"] == "closed":
-            diction = {
-                "num": "x",
-                "title": "x",
-                "link": "x"
-            }
-            diction["num"] = element["number"]
-            diction["title"] = element["title"]
-            diction["link"] = element["html_url"]
-            closed_list.append(diction)
-    closed_list = sorted(closed_list, key=lambda x: x['num'])
-    return closed_list
-
-
-def get_pulls_accepted():
-    response = requests.get('https://api.github.com/repos/alenaPy/devops_lab/pulls',
-                            params={'per_page': '100'})
-    data = response.json()
-    accepted_list = []
-
+def get_pulls_label(data, state):
+    label_list = []
     for element in data:
         if len(element["labels"]) > 0:
-            if element["labels"][0]["name"] == "accepted":
+            if element["labels"][0]["name"] == state:
                 diction = {
                     "num": "x",
                     "title": "x",
@@ -71,28 +50,6 @@ def get_pulls_accepted():
                 diction["num"] = element["number"]
                 diction["title"] = element["title"]
                 diction["link"] = element["html_url"]
-                accepted_list.append(diction)
-    accepted_list = sorted(accepted_list, key=lambda x: x['num'])
-    return accepted_list
-
-
-def get_pulls_needs_work():
-    response = requests.get('https://api.github.com/repos/alenaPy/devops_lab/pulls',
-                            params={'per_page': '100'})
-    data = response.json()
-    needs_work_list = []
-
-    for element in data:
-        if len(element["labels"]) > 0:
-            if element["labels"][0]["name"] == "needs work":
-                diction = {
-                    "num": "x",
-                    "title": "x",
-                    "link": "x"
-                }
-                diction["num"] = element["number"]
-                diction["title"] = element["title"]
-                diction["link"] = element["html_url"]
-                needs_work_list.append(diction)
-    needs_work_list = sorted(needs_work_list, key=lambda x: x['num'])
-    return needs_work_list
+                label_list.append(diction)
+    label_list = sorted(label_list, key=lambda x: x['num'])
+    return label_list
