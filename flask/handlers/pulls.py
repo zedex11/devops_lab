@@ -8,6 +8,8 @@ def get_pulls(state):
         return get_pulls_state(data, state)
     elif state == "accepted" or state == "needs work":
         return get_pulls_label(data, state)
+    else:
+        return get_pulls_full(data)
 
 
 def get_content():
@@ -20,36 +22,28 @@ def get_content():
     return data
 
 
+def get_pulls_full(data):
+    full_list = []
+    for e in data:
+        full_list.append({"num": e["number"], "link": e["html_url"], "title": e["title"]})
+    full_list = sorted(full_list, key=lambda x: x['num'])
+    return full_list
+
+
 def get_pulls_state(data, state):
     state_list = []
-    for element in data:
-        if element["state"] == state:
-            diction = {
-                "num": "x",
-                "title": "x",
-                "link": "x"
-            }
-            diction["num"] = element["number"]
-            diction["title"] = element["title"]
-            diction["link"] = element["html_url"]
-            state_list.append(diction)
+    for e in data:
+        if e["state"] == state:
+            state_list.append({"num": e["number"], "link": e["html_url"], "title": e["title"]})
     state_list = sorted(state_list, key=lambda x: x['num'])
     return state_list
 
 
 def get_pulls_label(data, state):
     label_list = []
-    for element in data:
-        if len(element["labels"]) > 0:
-            if element["labels"][0]["name"] == state:
-                diction = {
-                    "num": "x",
-                    "title": "x",
-                    "link": "x"
-                }
-                diction["num"] = element["number"]
-                diction["title"] = element["title"]
-                diction["link"] = element["html_url"]
-                label_list.append(diction)
+    for e in data:
+        if len(e["labels"]) > 0:
+            if e["labels"][0]["name"] == state:
+                label_list.append({"num": e["number"], "link": e["html_url"], "title": e["title"]})
     label_list = sorted(label_list, key=lambda x: x['num'])
     return label_list
