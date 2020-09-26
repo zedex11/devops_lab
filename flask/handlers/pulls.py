@@ -1,9 +1,7 @@
-"""Write your code here"""
 import requests
 
 
-def get_pulls(state):
-    data = get_content()
+def get_pulls(data, state):
     if state == "open" or state == "closed":
         return get_pulls_state(data, state)
     elif state == "accepted" or state == "needs work":
@@ -13,7 +11,7 @@ def get_pulls(state):
 
 
 def get_content():
-    user = 'user_name'  # enter your git-hub username
+    user = 'username'  # enter your git-hub username
     passwd = 'password'  # enter your git-hub password
     params = {'per_page': '100', 'state': 'all'}
     response = requests.get('https://api.github.com/repos/alenaPy/devops_lab/pulls',
