@@ -20,7 +20,7 @@ with tempfile.TemporaryDirectory() as tmpdir:
 
     try:
         for dirpath, dirnames, files in os.walk(tmpdir):
-            if "__init__.py" not in files and dirnames == []:
+            if "__init__.py" not in files:
                 shutil.rmtree(dirpath)
                 logging.debug(f"Have been removed catalog: {dirpath}")
     except OSError as e:
